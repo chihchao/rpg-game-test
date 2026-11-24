@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>《智械學園：AI 覺醒調查錄》音訊與音效試聽面板</title>
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --accent-color: #38bdf8;
+      --accent-hover: #0284c7;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --border-color: #334155;
+      --success-color: #4ade80;
+      --danger-color: #f87171;
+    }
+    body {
+      margin: 0;
+      padding: 24px;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 24px;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+    .panel-section {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+    }
+    h2 {
+      font-size: 18px;
+      margin-top: 0;
+      color: var(--accent-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .btn {
+      background: #334155;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      text-align: left;
+      transition: all 0.15s ease;
+    }
+    .btn:hover {
+      background: var(--accent-hover);
+      border-color: var(--accent-color);
+      transform: translateY(-1px);
+    }
+    .btn:active {
+      transform: translateY(1px);
+    }
+    .btn-title {
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-desc {
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+    .controls {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .slider-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .slider-group input {
+      accent-color: var(--accent-color);
+    }
+    .typewriter-test-box {
+      margin-top: 12px;
+      padding: 12px;
+      background: #0f172a;
+      border-radius: 8px;
+      border: 1px dashed var(--border-color);
+      min-height: 48px;
+      font-family: monospace;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎧《智械學園：AI 覺醒調查錄》音訊控制器與試聽面板</h1>
+    
+    <!-- 全域控制 -->
+    <div class="panel-section">
+      <h2>🎛️ 音訊全局控制</h2>
+      <div class="controls">
+        <div class="slider-group">
+          <label>SFX 音量：</label>
+          <input type="range" id="sfxVol" min="0" max="1" step="0.05" value="0.7">
+        </div>
+        <div class="slider-group">
+          <label>BGM 音量：</label>
+          <input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.5">
+        </div>
+        <button class="btn" id="muteBtn" style="padding: 6px 16px; flex-direction: row; align-items: center;">
+          <span id="muteIcon">🔊</span> <span id="muteText">靜音切換</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- SFX 音效測試 -->
+    <div class="panel-section">
+      <h2>🔔 SFX 音效庫 (Web Audio API 程序化合成備援測試)</h2>
+      <div class="grid">
+        <button class="btn" onclick="playSfx('sfx_click')">
+          <span class="btn-title">🖱️ sfx_click</span>
+          <span class="btn-desc">UI 按鍵點擊 / 選擇確認</span>
+        </button>
+
+        <button class="btn" onclick="playSfx('sfx_hover')">
+          <span class="btn-title">✨ sfx_hover</span>
+          <span class="btn-desc">按鈕懸停 / 項目切換</span>
+        </button>
+
+        <button class="btn" onclick="playSfx('sfx_correct')">
+          <span class="btn-title">✅ sfx_correct</span>
+          <span class="btn-desc">推理成功 / 答對清脆琶音</span>
+        </button>
+
+        <button class="btn" onclick="playSfx('sfx_wrong')">
+          <span class="btn-title">❌ sfx_wrong</span>
+          <span class="btn-desc">答錯 / 阿哲搞笑吐槽音</span>
+        </button>
+
+        <button class="btn" onclick="playSfx('sfx_evidence_get')">
+          <span class="btn-title">🔍 sfx_evidence_get</span>
+          <span class="btn-desc">獲得證物 / 圖鑑解鎖 Jingle</span>
+        </button>
+
+        <button class="btn" onclick="playSfx('sfx_glitch')">
+          <span class="btn-title">⚡ sfx_glitch</span>
+          <span class="btn-desc">小智系統故障紅光電弧火花</span>
+        </button>
+
+        <button class="btn" onclick="playSfx('sfx_alert')">
+          <span class="btn-title">📢 sfx_alert</span>
+          <span class="btn-desc">校園廣播雙音鐘聲 (叮-咚)</span>
+        </button>
+
+        <button class="btn" onclick="playSfx('sfx_badge')">
+          <span class="btn-title">🎖️ sfx_badge</span>
+          <span class="btn-desc">林老師頒發數位素養徽章 Fanfare</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- 打字機測試 -->
+    <div class="panel-section">
+      <h2>💬 對話打字機音 (Dialogue Blip) 角色音高動態測試</h2>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;">
+        <button class="btn" onclick="testTypewriter('emma')">👱‍♀️ 艾瑪發言 (高音 680Hz)</button>
+        <button class="btn" onclick="testTypewriter('azhe')">🍔 阿哲發言 (低音 420Hz)</button>
+        <button class="btn" onclick="testTypewriter('zhibot')">🤖 小智發言 (電子調 740Hz)</button>
+        <button class="btn" onclick="testTypewriter('teacher')">👨‍🏫 林老師發言 (沉穩 480Hz)</button>
+      </div>
+      <div class="typewriter-test-box" id="dialogueOutput">
+        點擊上方按鈕測試帶有角色音調的對話打字機流暢發聲效果...
+      </div>
+    </div>
+
+    <!-- BGM 測試 -->
+    <div class="panel-section">
+      <h2>🎵 背景音樂 (BGM) 模擬切換</h2>
+      <div class="grid">
+        <button class="btn" onclick="playBgm('bgm_campus_daily')">
+          <span class="btn-title">🏫 bgm_campus_daily</span>
+          <span class="btn-desc">序章校園日常 (City Sunshine)</span>
+        </button>
+
+        <button class="btn" onclick="playBgm('bgm_investigation')">
+          <span class="btn-title">🔎 bgm_investigation</span>
+          <span class="btn-desc">推理與調查 (Thinking Music)</span>
+        </button>
+
+        <button class="btn" onclick="playBgm('bgm_system_glitch')">
+          <span class="btn-title">⚠️ bgm_system_glitch</span>
+          <span class="btn-desc">系統警報與緊張 (Volatile Reaction)</span>
+        </button>
+
+        <button class="btn" onclick="playBgm('bgm_rooftop_sunset')">
+          <span class="btn-title">🌇 bgm_rooftop_sunset</span>
+          <span class="btn-desc">頂樓夕陽終章 (Heartwarming)</span>
+        </button>
+      </div>
+      <div style="margin-top: 12px;">
+        <button class="btn" onclick="audioManager.stopBGM(0.5)" style="background: #475569;">
+          ⏹️ 停止背景音樂
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { audioManager } from './js/audio-manager.js';
+
+    window.playSfx = (key) => audioManager.playSFX(key);
+    window.playBgm = (key) => audioManager.playBGM(key);
+
+    const sfxVol = document.getElementById('sfxVol');
+    const bgmVol = document.getElementById('bgmVol');
+    const muteBtn = document.getElementById('muteBtn');
+    const muteIcon = document.getElementById('muteIcon');
+    const dialogueOutput = document.getElementById('dialogueOutput');
+
+    sfxVol.addEventListener('input', (e) => audioManager.setSFXVolume(parseFloat(e.target.value)));
+    bgmVol.addEventListener('input', (e) => audioManager.setBGMVolume(parseFloat(e.target.value)));
+
+    muteBtn.addEventListener('click', () => {
+      const isMuted = audioManager.toggleMute();
+      muteIcon.textContent = isMuted ? '🔇' : '🔊';
+    });
+
+    // 打字機打字模擬
+    let typewriterTimer = null;
+    window.testTypewriter = (character) => {
+      if (typewriterTimer) clearInterval(typewriterTimer);
+      
+      const dialogueMap = {
+        emma: '【艾瑪】：根據系統日誌分析，小智的特徵提取演算法存在明顯的資料偏差！',
+        azhe: '【阿哲】：等等！難道說自動門真的不是被邪惡 AI 控制的嗎？！',
+        zhibot: '【小智】：嗶嗶——警告！偵測到未授權的極端數值輸入，系統認知運算中...',
+        teacher: '【林老師】：很好，大家都成功掌握了機器學習的資料集清洗觀念！'
+      };
+
+      const text = dialogueMap[character] || '測試打字機語音嗶嗶聲效果...';
+      dialogueOutput.textContent = '';
+      let idx = 0;
+
+      typewriterTimer = setInterval(() => {
+        if (idx < text.length) {
+          dialogueOutput.textContent += text[idx];
+          audioManager.playSFX('sfx_typewriter', { character });
+          idx++;
+        } else {
+          clearInterval(typewriterTimer);
+        }
+      }, 50);
+    };
+  </script>
+</body>
+</html>

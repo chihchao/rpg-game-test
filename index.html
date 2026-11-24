@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>《智械學園：AI 覺醒調查錄》- 2D 視覺小說 RPG</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- 遊戲主應用容器 -->
+  <main id="game-app">
+
+    <!-- 頂部 HUD 狀態列 -->
+    <header class="hud-header">
+      <div class="hud-title-zone">
+        <span class="chapter-badge" id="hud-chapter-badge">序章・失控的智慧校園</span>
+        <span class="location-text" id="hud-location-text">📍 校門口廣場</span>
+      </div>
+
+      <div class="hud-stats-zone">
+        <!-- 邏輯值 (Logic) -->
+        <div class="stat-item" title="邏輯值：回答符合科學與演算法原理時提升">
+          <span class="stat-icon">🧠</span>
+          <span class="stat-label">邏輯</span>
+          <div class="stat-bar-container">
+            <div class="stat-bar logic" id="hud-logic-bar"></div>
+          </div>
+          <span class="stat-value" id="hud-logic-val">50</span>
+        </div>
+
+        <!-- 倫理值 (Ethics) -->
+        <div class="stat-item" title="倫理值：做出負責任、尊重隱私與查證的決定時提升">
+          <span class="stat-icon">⚖️</span>
+          <span class="stat-label">倫理</span>
+          <div class="stat-bar-container">
+            <div class="stat-bar ethics" id="hud-ethics-bar"></div>
+          </div>
+          <span class="stat-value" id="hud-ethics-val">50</span>
+        </div>
+      </div>
+
+      <div class="hud-actions-zone">
+        <button class="hud-btn" id="btn-encyclopedia" title="查看已收錄的 AI 原理">📖 百科圖鑑</button>
+        <button class="hud-btn" id="btn-items" title="檢視收集到的關鍵線索證物">🔍 證物欄</button>
+        <button class="hud-btn" id="btn-mute" title="切換背景音樂與音效">🔊 音效</button>
+        <button class="hud-btn" id="btn-restart" title="重新開始本案調查">🔄 重置</button>
+      </div>
+    </header>
+
+    <!-- 舞台區域 (背景、警報、立繪) -->
+    <section class="stage-container">
+      <div class="scene-background" id="scene-bg"></div>
+      <div class="stage-vignette"></div>
+      <div class="alert-overlay" id="alert-overlay"></div>
+
+      <!-- 立繪槽位：左、中、右 -->
+      <div class="characters-layer">
+        <div class="character-slot" id="char-slot-left"></div>
+        <div class="character-slot" id="char-slot-center"></div>
+        <div class="character-slot" id="char-slot-right"></div>
+      </div>
+    </section>
+
+    <!-- 分支選擇面板 (Choice Panel) -->
+    <div class="choice-panel" id="choice-panel">
+      <!-- 動態插入選項按鈕 -->
+    </div>
+
+    <!-- 底部對話系統 -->
+    <section class="dialogue-wrapper" id="dialogue-wrapper">
+      <div class="speaker-box" id="speaker-box">
+        <span class="speaker-name" id="speaker-name">發話者</span>
+        <span class="speaker-role" id="speaker-role">身分標籤</span>
+      </div>
+
+      <div class="dialogue-box" id="dialogue-box">
+        <p class="dialogue-text" id="dialogue-text"></p>
+        <div class="dialogue-footer">
+          <span>點擊對話框或按 [空白鍵 / Enter] 推進</span>
+          <span class="advance-indicator" id="advance-indicator">▼</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 通用彈出視窗 (Modal Overlay) -->
+    <div class="modal-overlay" id="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3 class="modal-title" id="modal-title">標題</h3>
+          <button class="modal-close-btn" id="modal-close-btn">✕</button>
+        </div>
+        <div class="modal-body" id="modal-body">
+          <!-- 動態載入圖鑑、證物或結算內容 -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 載入腳本庫 -->
+  <script src="js/data/encyclopedia.js"></script>
+  <script src="js/data/questions.js"></script>
+  <script src="js/data/story.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
